@@ -14,7 +14,8 @@ class DiskViewModel : ViewModel() {
     val disks: StateFlow<List<HardDisk>> = _disks.asStateFlow()
 
     fun addDisk(disk: HardDisk) {
-        _disks.value = _disks.value + disk
+        _disks.value += disk
+//        println("_disks")
     }
 
     fun updateDisk(updatedDisk: HardDisk) {

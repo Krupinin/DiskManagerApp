@@ -8,7 +8,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+
 import androidx.navigation.NavController
 import ru.wish.oop_android.core.entities.HardDisk
 import ru.wish.oop_android.viewmodels.DiskViewModel
@@ -16,7 +16,7 @@ import ru.wish.oop_android.viewmodels.DiskViewModel
 @Composable
 fun DiskListScreen(
     navController: NavController,
-    viewModel: DiskViewModel = viewModel()
+    viewModel: DiskViewModel
 ) {
     val disks by viewModel.disks.collectAsState()
 

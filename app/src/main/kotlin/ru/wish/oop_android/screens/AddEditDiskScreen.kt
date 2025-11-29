@@ -6,7 +6,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+
 import androidx.navigation.NavController
 import ru.wish.oop_android.core.entities.ExternalHardDisk
 import ru.wish.oop_android.core.entities.HardDisk
@@ -20,7 +20,7 @@ enum class DiskType { EXTERNAL, INTERNAL }
 fun AddEditDiskScreen(
     navController: NavController,
     diskId: String? = null,
-    viewModel: DiskViewModel = viewModel()
+    viewModel: DiskViewModel
 ) {
     val disk = diskId?.toIntOrNull()?.let { id -> viewModel.getDiskById(id) }
 
@@ -34,7 +34,11 @@ fun AddEditDiskScreen(
     var size by remember { mutableStateOf((disk as? InternalHardDisk)?.size ?: "3.5\"") }
     var hasProtection by remember { mutableStateOf((disk as? ExternalHardDisk)?.hasDropProtection ?: false) }
 
-    Scaffold { padding ->
+    val snackbarHostState = remember { SnackbarHostState() }
+
+    Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) }
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -148,9 +152,16 @@ fun AddEditDiskScreen(
                 Button(
                     onClick = {
                         val cap = capacity.toIntOrNull() ?: return@Button
-                        val newDisk: HardDisk = when (type) {
-                            DiskType.EXTERNAL -> ExternalHardDisk(name, cap, hasProtection, disk?.id ?: 0)
-                            DiskType.INTERNAL -> InternalHardDisk(name, cap, size, disk?.id ?: 0)
+                        val newDisk: HardDisk = if (disk == null) {
+                            when (type) {
+                                DiskType.EXTERNAL -> ExternalHardDisk(name, cap, hasProtection)
+                                DiskType.INTERNAL -> InternalHardDisk(name, cap, size)
+                            }
+                        } else {
+                            when (type) {
+                                DiskType.EXTERNAL -> ExternalHardDisk(name, cap, hasProtection, disk.id)
+                                DiskType.INTERNAL -> InternalHardDisk(name, cap, size, disk.id)
+                            }
                         }
                         if (disk == null) {
                             viewModel.addDisk(newDisk)

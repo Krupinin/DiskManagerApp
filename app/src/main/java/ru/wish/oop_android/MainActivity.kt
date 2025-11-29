@@ -6,12 +6,14 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import ru.wish.oop_android.screens.AddEditDiskScreen
 import ru.wish.oop_android.screens.DiskListScreen
 import ru.wish.oop_android.ui.theme.Oop_androidTheme
+import ru.wish.oop_android.viewmodels.DiskViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,17 +30,18 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun AppNavigation() {
     val navController = rememberNavController()
+    val viewModel: DiskViewModel = viewModel()
 
     NavHost(navController = navController, startDestination = "list") {
         composable("list") {
-            DiskListScreen(navController)
+            DiskListScreen(navController, viewModel)
         }
         composable("add") {
-            AddEditDiskScreen(navController)
+            AddEditDiskScreen(navController, viewModel = viewModel)
         }
         composable("edit/{diskId}") { backStackEntry ->
             val diskId = backStackEntry.arguments?.getString("diskId")
-            AddEditDiskScreen(navController, diskId)
+            AddEditDiskScreen(navController, diskId, viewModel)
         }
     }
 }
