@@ -2,7 +2,6 @@ package org.example.application
 
 import org.example.infrastructure.input.DataInput
 import org.example.infrastructure.output.DataOutput
-import ru.wish.oop_android.core.entities.HardDisk
 
 // Главный класс приложения (модуль верхнего уровня)
 class DiskManagerApp(

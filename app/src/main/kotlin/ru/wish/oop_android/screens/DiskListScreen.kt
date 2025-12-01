@@ -13,8 +13,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
 import ru.wish.oop_android.R
 import ru.wish.oop_android.core.entities.HardDisk
-import ru.wish.oop_android.core.entities.ExternalHardDisk
-import ru.wish.oop_android.core.entities.InternalHardDisk
 import ru.wish.oop_android.viewmodels.DiskViewModel
 import ru.wish.oop_android.viewmodels.DiskFilter
 import ru.wish.oop_android.viewmodels.DiskStats
