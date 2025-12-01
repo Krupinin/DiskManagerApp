@@ -34,10 +34,7 @@ fun AddEditDiskScreen(
     var size by remember { mutableStateOf((disk as? InternalHardDisk)?.size ?: "3.5\"") }
     var hasProtection by remember { mutableStateOf((disk as? ExternalHardDisk)?.hasDropProtection ?: false) }
 
-    val snackbarHostState = remember { SnackbarHostState() }
-
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) }
     ) { padding ->
         Column(
             modifier = Modifier
