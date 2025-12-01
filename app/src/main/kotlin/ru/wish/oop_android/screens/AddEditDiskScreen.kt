@@ -6,9 +6,11 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 
 import androidx.navigation.NavController
+import ru.wish.oop_android.R
 import ru.wish.oop_android.core.entities.ExternalHardDisk
 import ru.wish.oop_android.core.entities.HardDisk
 import ru.wish.oop_android.core.entities.InternalHardDisk
@@ -45,7 +47,7 @@ fun AddEditDiskScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                if (disk == null) "Добавить диск" else "Редактировать диск",
+                stringResource(if (disk == null) R.string.add_disk_title else R.string.edit_disk_title),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -53,7 +55,7 @@ fun AddEditDiskScreen(
             OutlinedTextField(
                 value = name,
                 onValueChange = { name = it },
-                label = { Text("Название") },
+                label = { Text(stringResource(R.string.name)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -61,7 +63,7 @@ fun AddEditDiskScreen(
             OutlinedTextField(
                 value = capacity,
                 onValueChange = { capacity = it },
-                label = { Text("Ёмкость (ГБ)") },
+                label = { Text(stringResource(R.string.capacity_gb)) },
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -79,10 +81,10 @@ fun AddEditDiskScreen(
                             onClick = { type = t }
                         )
                         Text(
-                            when (t) {
-                                DiskType.EXTERNAL -> "Внешний"
-                                DiskType.INTERNAL -> "Внутренний"
-                            }
+                            stringResource(when (t) {
+                                DiskType.EXTERNAL -> R.string.external
+                                DiskType.INTERNAL -> R.string.internal
+                            })
                         )
                     }
                 }
@@ -101,7 +103,7 @@ fun AddEditDiskScreen(
                             value = size,
                             onValueChange = {},
                             readOnly = true,
-                            label = { Text("Размер") },
+                            label = { Text(stringResource(R.string.size)) },
                             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -131,7 +133,7 @@ fun AddEditDiskScreen(
                             checked = hasProtection,
                             onCheckedChange = { hasProtection = it }
                         )
-                        Text("Защита от падения")
+                        Text(stringResource(R.string.drop_protection))
                     }
                 }
             }
@@ -145,7 +147,7 @@ fun AddEditDiskScreen(
                     onClick = { navController.popBackStack() },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Отмена")
+                    Text(stringResource(R.string.cancel))
                 }
                 Button(
                     onClick = {
@@ -170,7 +172,7 @@ fun AddEditDiskScreen(
                     },
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Сохранить")
+                    Text(stringResource(R.string.save))
                 }
             }
         }

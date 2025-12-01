@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">oop_android</string>
+
+    <!-- Screen titles -->
+    <string name="hard_drives_title">Hard Drives</string>
+    <string name="add_disk_title">Add Disk</string>
+    <string name="edit_disk_title">Edit Disk</string>
+
+    <!-- Common -->
+    <string name="name">Name</string>
+    <string name="capacity_gb">Capacity (GB)</string>
+    <string name="size">Size</string>
+    <string name="filter">Filter</string>
+    <string name="edit">Edit</string>
+    <string name="delete">Delete</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+
+    <!-- Disk types -->
+    <string name="external">External</string>
+    <string name="internal">Internal</string>
+
+    <!-- Filters -->
+    <string name="all_disks">All disks</string>
+    <string name="high_capacity_disks">Disks with capacity over 200 GB</string>
+    <string name="internal_disks">Internal disks</string>
+    <string name="external_disks">External disks</string>
+
+    <!-- Statistics -->
+    <string name="stats_format">Total disks: %1$d, Selected: %2$d, External: %3$d, Internal: %4$d</string>
+
+    <!-- Descriptions -->
+    <string name="with_drop_protection">with drop protection</string>
+    <string name="without_drop_protection">without drop protection</string>
+    <string name="external_disk_description">External disk \'%1$s\' (%2$d GB) %3$s</string>
+    <string name="internal_disk_description">Internal disk \'%1$s\' (%2$d GB) size %3$s</string>
+
+    <!-- Features -->
+    <string name="drop_protection">Drop protection</string>
+</resources>

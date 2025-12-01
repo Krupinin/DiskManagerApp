@@ -7,9 +7,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import ru.wish.oop_android.R
 import ru.wish.oop_android.core.entities.ExternalHardDisk
 import ru.wish.oop_android.core.entities.HardDisk
 import ru.wish.oop_android.core.entities.InternalHardDisk
@@ -54,27 +56,29 @@ fun DiskListScreen(
                 .padding(padding)
                 .padding(16.dp)
         ) {
-            Text("Жёсткие диски", style = MaterialTheme.typography.headlineMedium)
+            Text(stringResource(R.string.hard_drives_title), style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(16.dp))
 
             // Filter selector
             var expanded by remember { mutableStateOf(false) }
-            val filterOptions = mapOf(
-                DiskFilter.ALL to "Все диски",
-                DiskFilter.HIGH_CAPACITY to "Диски ёмкостью более 200 ГБ",
-                DiskFilter.INTERNAL_ONLY to "Внутренние диски",
-                DiskFilter.EXTERNAL_ONLY to "Внешние диски"
-            )
+            val currentFilterRes = remember(currentFilter) {
+                when (currentFilter) {
+                    DiskFilter.ALL -> R.string.all_disks
+                    DiskFilter.HIGH_CAPACITY -> R.string.high_capacity_disks
+                    DiskFilter.INTERNAL_ONLY -> R.string.internal_disks
+                    DiskFilter.EXTERNAL_ONLY -> R.string.external_disks
+                }
+            }
 
             ExposedDropdownMenuBox(
                 expanded = expanded,
                 onExpandedChange = { expanded = it }
             ) {
                 OutlinedTextField(
-                    value = filterOptions[currentFilter] ?: "",
+                    value = stringResource(currentFilterRes),
                     onValueChange = {},
                     readOnly = true,
-                    label = { Text("Фильтр") },
+                    label = { Text(stringResource(R.string.filter)) },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
                     modifier = Modifier.menuAnchor()
                 )
@@ -82,9 +86,15 @@ fun DiskListScreen(
                     expanded = expanded,
                     onDismissRequest = { expanded = false }
                 ) {
-                    filterOptions.forEach { (filter, label) ->
+                    listOf(DiskFilter.ALL, DiskFilter.HIGH_CAPACITY, DiskFilter.INTERNAL_ONLY, DiskFilter.EXTERNAL_ONLY).forEach { filter ->
+                        val filterRes = when (filter) {
+                            DiskFilter.ALL -> R.string.all_disks
+                            DiskFilter.HIGH_CAPACITY -> R.string.high_capacity_disks
+                            DiskFilter.INTERNAL_ONLY -> R.string.internal_disks
+                            DiskFilter.EXTERNAL_ONLY -> R.string.external_disks
+                        }
                         DropdownMenuItem(
-                            text = { Text(label) },
+                            text = { Text(stringResource(filterRes)) },
                             onClick = {
                                 currentFilter = filter
                                 expanded = false
@@ -100,8 +110,7 @@ fun DiskListScreen(
             val externalCount = disks.count { it is ExternalHardDisk }
             val internalCount = disks.count { it is InternalHardDisk }
             Text(
-                "Всего дисков: ${disks.size}, Отобрано: ${filteredDisks.size}, " +
-                "Внешних: $externalCount, Внутренних: $internalCount",
+                stringResource(R.string.stats_format, disks.size, filteredDisks.size, externalCount, internalCount),
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.fillMaxWidth()
@@ -140,15 +149,32 @@ fun DiskItem(disk: HardDisk, onEdit: () -> Unit, onDelete: () -> Unit) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(disk.name, style = MaterialTheme.typography.bodyLarge)
                 Text("${disk.capacityGB} GB", style = MaterialTheme.typography.bodyMedium)
-                Text(disk.getDescription(), style = MaterialTheme.typography.bodySmall)
+                Text(
+                    if (disk is ExternalHardDisk) {
+                        stringResource(
+                            R.string.external_disk_description,
+                            disk.name,
+                            disk.capacityGB,
+                            if (disk.hasDropProtection) stringResource(R.string.with_drop_protection) else stringResource(R.string.without_drop_protection)
+                        )
+                    } else {
+                        stringResource(
+                            R.string.internal_disk_description,
+                            disk.name,
+                            disk.capacityGB,
+                            (disk as InternalHardDisk).size
+                        )
+                    },
+                    style = MaterialTheme.typography.bodySmall
+                )
             }
             Row {
                 Button(onClick = onEdit) {
-                    Text("Редактировать")
+                    Text(stringResource(R.string.edit))
                 }
                 Spacer(modifier = Modifier.width(8.dp))
                 Button(onClick = onDelete, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)) {
-                    Text("Удалить")
+                    Text(stringResource(R.string.delete))
                 }
             }
         }
