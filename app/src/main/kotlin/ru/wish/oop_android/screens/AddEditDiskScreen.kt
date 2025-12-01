@@ -3,6 +3,7 @@ package ru.wish.oop_android.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -24,15 +25,15 @@ fun AddEditDiskScreen(
 ) {
     val disk = diskId?.toIntOrNull()?.let { id -> viewModel.getDiskById(id) }
 
-    var name by remember { mutableStateOf(disk?.name ?: "") }
-    var capacity by remember { mutableStateOf(disk?.capacityGB?.toString() ?: "") }
-    var type by remember { mutableStateOf(
+    var name by rememberSaveable { mutableStateOf(disk?.name ?: "") }
+    var capacity by rememberSaveable { mutableStateOf(disk?.capacityGB?.toString() ?: "") }
+    var type by rememberSaveable { mutableStateOf(
         if (disk is ExternalHardDisk) DiskType.EXTERNAL
         else if (disk is InternalHardDisk) DiskType.INTERNAL
         else DiskType.EXTERNAL
     ) }
-    var size by remember { mutableStateOf((disk as? InternalHardDisk)?.size ?: "3.5\"") }
-    var hasProtection by remember { mutableStateOf((disk as? ExternalHardDisk)?.hasDropProtection ?: false) }
+    var size by rememberSaveable { mutableStateOf((disk as? InternalHardDisk)?.size ?: "3.5\"") }
+    var hasProtection by rememberSaveable { mutableStateOf((disk as? ExternalHardDisk)?.hasDropProtection ?: false) }
 
     Scaffold(
     ) { padding ->
