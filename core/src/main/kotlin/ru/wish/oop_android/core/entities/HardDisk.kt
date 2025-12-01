@@ -1,6 +1,7 @@
 package ru.wish.oop_android.core.entities
 
 import ru.wish.oop_android.core.interfaces.StorageDevice
+import java.util.concurrent.atomic.AtomicInteger
 
 // Абстрактный базовый класс
 abstract class HardDisk(
@@ -10,8 +11,8 @@ abstract class HardDisk(
 ) : StorageDevice {
 
     companion object {
-        private var currentId = 0
-        internal fun generateId() = ++currentId
+        private val currentId = AtomicInteger(0)
+        internal fun generateId() = currentId.incrementAndGet()
     }
 
     abstract fun getDescription(): String
