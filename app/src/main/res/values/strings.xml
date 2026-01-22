@@ -30,6 +30,10 @@
     <string name="stats_format">Всего дисков: %1$d, Отобрано: %2$d, Внешних: %3$d, Внутренних: %4$d</string>
 
     <!-- Descriptions -->
+    <string name="with_drop_protection">с защитой от падения</string>
+    <string name="without_drop_protection">без защиты от падения</string>
+    <string name="external_disk_description">Внешний диск \'%1$s\' (%2$d ГБ) %3$s</string>
+    <string name="internal_disk_description">Внутренний диск \'%1$s\' (%2$d ГБ) размер %3$s</string>
 
     <!-- Features -->
     <string name="drop_protection">Защита от падения</string>

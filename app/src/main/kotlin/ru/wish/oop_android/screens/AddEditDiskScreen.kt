@@ -8,6 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 import androidx.navigation.NavController
 import ru.wish.oop_android.R
@@ -25,17 +26,32 @@ fun AddEditDiskScreen(
     diskId: String? = null,
     viewModel: DiskViewModel
 ) {
-    val disk = diskId?.toIntOrNull()?.let { id -> viewModel.getDiskById(id) }
+    val disk = remember { mutableStateOf<HardDisk?>(null) }
 
-    var name by rememberSaveable { mutableStateOf(disk?.name ?: "") }
-    var capacity by rememberSaveable { mutableStateOf(disk?.capacityGB?.toString() ?: "") }
-    var type by rememberSaveable { mutableStateOf(
-        if (disk is ExternalHardDisk) DiskType.EXTERNAL
-        else if (disk is InternalHardDisk) DiskType.INTERNAL
-        else DiskType.EXTERNAL
-    ) }
-    var size by rememberSaveable { mutableStateOf((disk as? InternalHardDisk)?.size ?: "3.5\"") }
-    var hasProtection by rememberSaveable { mutableStateOf((disk as? ExternalHardDisk)?.hasDropProtection ?: false) }
+    LaunchedEffect(diskId) {
+        disk.value = diskId?.toIntOrNull()?.let { id -> viewModel.getDiskById(id) }
+    }
+
+    var name by rememberSaveable { mutableStateOf("") }
+    var capacity by rememberSaveable { mutableStateOf("") }
+    var type by rememberSaveable { mutableStateOf(DiskType.EXTERNAL) }
+    var size by rememberSaveable { mutableStateOf("3.5\"") }
+    var hasProtection by rememberSaveable { mutableStateOf(false) }
+
+    // Update fields when disk loads
+    LaunchedEffect(disk.value) {
+        disk.value?.let { d ->
+            name = d.name
+            capacity = d.capacityGB.toString()
+            type = when (d) {
+                is ExternalHardDisk -> DiskType.EXTERNAL
+                is InternalHardDisk -> DiskType.INTERNAL
+                else -> DiskType.EXTERNAL
+            }
+            size = (d as? InternalHardDisk)?.size ?: "3.5\""
+            hasProtection = (d as? ExternalHardDisk)?.hasDropProtection ?: false
+        }
+    }
 
     Scaffold(
     ) { padding ->
@@ -152,18 +168,18 @@ fun AddEditDiskScreen(
                 Button(
                     onClick = {
                         val cap = capacity.toIntOrNull() ?: return@Button
-                        val newDisk: HardDisk = if (disk == null) {
+                        val newDisk: HardDisk = if (disk.value == null) {
                             when (type) {
                                 DiskType.EXTERNAL -> ExternalHardDisk(name, cap, hasProtection)
                                 DiskType.INTERNAL -> InternalHardDisk(name, cap, size)
                             }
                         } else {
                             when (type) {
-                                DiskType.EXTERNAL -> ExternalHardDisk(name, cap, hasProtection, disk.id)
-                                DiskType.INTERNAL -> InternalHardDisk(name, cap, size, disk.id)
+                                DiskType.EXTERNAL -> ExternalHardDisk(name, cap, hasProtection, disk.value!!.id)
+                                DiskType.INTERNAL -> InternalHardDisk(name, cap, size, disk.value!!.id)
                             }
                         }
-                        if (disk == null) {
+                        if (disk.value == null) {
                             viewModel.addDisk(newDisk)
                         } else {
                             viewModel.updateDisk(newDisk)

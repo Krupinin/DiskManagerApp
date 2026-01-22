@@ -14,7 +14,9 @@ import ru.wish.oop_android.screens.AddEditDiskScreen
 import ru.wish.oop_android.screens.DiskListScreen
 import ru.wish.oop_android.ui.theme.Oop_androidTheme
 import ru.wish.oop_android.viewmodels.DiskViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
