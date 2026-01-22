@@ -6,7 +6,6 @@ import androidx.room.Update
 import androidx.room.Delete
 import androidx.room.Query
 import ru.wish.oop_android.data.model.DiskEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface DiskDao {

@@ -6,6 +6,7 @@
 /build
 /core/build
 /app/build
+/console/build
 /captures
 .externalNativeBuild
 .cxx
