@@ -8,7 +8,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 
 import androidx.navigation.NavController
 import ru.wish.oop_android.R
@@ -63,7 +62,7 @@ fun AddEditDiskScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Text(
-                stringResource(if (disk == null) R.string.add_disk_title else R.string.edit_disk_title),
+                stringResource(R.string.edit_disk_title),
                 style = MaterialTheme.typography.headlineMedium
             )
 

@@ -90,7 +90,7 @@ class DiskViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 addDiskUseCase.execute(disk)
-                loadDisks() // Reload after operation
+                loadDisks()
             } catch (e: Exception) {
                 // Handle error
             }

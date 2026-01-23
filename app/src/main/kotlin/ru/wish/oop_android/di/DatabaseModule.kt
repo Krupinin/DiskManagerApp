@@ -53,7 +53,6 @@ object DatabaseModule {
         return RoomDiskRepository(localDataSource)
     }
 
-// Uncomment to use Mock repository instead
 //    @Provides
 //    @Singleton
 //    fun provideDiskRepository(mockDataSource: MockDataSource): DiskRepository {
